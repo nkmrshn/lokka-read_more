@@ -1,0 +1,9 @@
+%h2= t.read_more
+%form{:action => '/admin/plugins/read_more', :method => 'post'}
+  %input{:type => 'hidden', :name => '_method', :value => 'put'}
+  .field
+    %label{:for => 'delimiter'}= t.read_more_delimiter
+    %br
+    %input{:type => 'text', :id => 'delimiter', :name => 'delimiter', :value => Option.read_more_delimiter || "----"}
+  .field
+    %input{:type => 'submit', :value => t.edit}
