@@ -1,6 +1,21 @@
 module Lokka
   module ReadMore
     def self.registered(app)
+      app.before '/index.atom' do
+        delimiter = Option.read_more_delimiter
+        delimiter = "----" if delimiter.blank?
+        delimiter += "<br>"
+        @posts = Post.page(params[:page], :per_page => settings.per_page)
+        @posts.each do |post|
+          unless (i = post.body.index(delimiter)).nil?
+            post.body = post.body.slice(0, i) + post.body.slice(i + delimiter.length, post.body.length) 
+          end
+        end
+        content_type = 'application/atom+xml;charset=utf-8'
+        content =  builder :'system/index'
+        halt 200, {'Content-Type' => content_type}, content
+      end
+
       app.get '/admin/plugins/read_more' do
         haml :"plugin/lokka-read_more/views/index", :layout => :"admin/layout"
       end 
@@ -15,7 +30,9 @@ module Lokka
 
   module Helpers
     def body_with_more(o)
-      delimiter = (Option.read_more_delimiter || "----") + "<br>"
+      delimiter = Option.read_more_delimiter
+      delimiter = "----" if delimiter.blank?
+      delimiter += "<br>"
       unless (i = o.body.index(delimiter)).nil?
         body = o.body.slice(0, i)
         if @request.env['PATH_INFO'] == '/'
