@@ -23,6 +23,7 @@ module Lokka
       app.put '/admin/plugins/read_more' do
         Option.read_more_delimiter = params['delimiter']
         Option.read_more_text = params['text']
+        Option.read_more_class = params['class']
         flash[:notice] = t.read_more_updated
         redirect '/admin/plugins/read_more'
       end 
@@ -39,7 +40,8 @@ module Lokka
         if @request.env['PATH_INFO'] == '/'
           text = Option.read_more_text
           text = t.read_more if text.blank?
-          body += %Q(<a href="/#{o.id}">#{text}</a>)
+          class_name = Option.read_more_class
+          body += %Q(<a class="#{class_name}" href="/#{o.id}">#{text}</a>)
         else
           body += o.body.slice(i + delimiter.length, o.body.length) 
         end

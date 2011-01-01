@@ -10,4 +10,8 @@
     %br
     %input{:type => 'text', :id => 'text', :name => 'text', :value => Option.read_more_text || t.read_more}
   .field
+    %label{:for => 'class'}= t.read_more_class
+    %br
+    %input{:type => 'text', :id => 'class', :name => 'class', :value => Option.read_more_class}
+  .field
     %input{:type => 'submit', :value => t.edit}
