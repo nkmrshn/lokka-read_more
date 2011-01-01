@@ -6,4 +6,8 @@
     %br
     %input{:type => 'text', :id => 'delimiter', :name => 'delimiter', :value => Option.read_more_delimiter || "----"}
   .field
+    %label{:for => 'text'}= t.read_more_text
+    %br
+    %input{:type => 'text', :id => 'text', :name => 'text', :value => Option.read_more_text || t.read_more}
+  .field
     %input{:type => 'submit', :value => t.edit}
