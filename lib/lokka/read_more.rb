@@ -5,7 +5,7 @@ module Lokka
         delimiter = Option.read_more_delimiter
         delimiter = "----" if delimiter.blank?
         delimiter += "<br>"
-        @posts = Post.page(params[:page], :per_page => settings.per_page)
+        @posts = Post.published.page(params[:page], :per_page => settings.per_page)
         @posts.each do |post|
           unless (i = post.body.index(delimiter)).nil?
             post.body = post.body.slice(0, i) + post.body.slice(i + delimiter.length, post.body.length) 
